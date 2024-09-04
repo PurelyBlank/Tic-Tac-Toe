@@ -101,6 +101,12 @@ const gameController = function() {
     }
 
     const playRound = (position) => {
+        ++rounds
+        if (rounds === 9) {
+            console.log("Tie!")
+            return
+        }
+        
         console.log(`${getCurrentPlayer().name}'s turn placed token on row: ${position.row}, col: ${position.col}`)
         let state = gameBoard.dropToken(getCurrentPlayer(), position)
         // player placed token in a marked cell
@@ -112,14 +118,9 @@ const gameController = function() {
             console.log(`${getCurrentPlayer().name} has won!`)
             return
         }
-        if (rounds === 9) {
-            console.log("Tie!")
-            return
-        }
-        
+
         switchPlayer()
         printRound()
-        ++rounds
     }
 
     printRound()
