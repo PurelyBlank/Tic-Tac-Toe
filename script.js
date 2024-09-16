@@ -132,5 +132,10 @@ const gameController = function() {
  * Responsible for rendering and functionality of game
  */
 const displayController = function() {
-
+    const cells = document.querySelectorAll(".board--cell")
+    cells.forEach((elem) => elem.addEventListener("click", (event) => {
+        let board_id = event.target.id
+        let row = board_id / 3
+        let col = row % 3
+    }))
 }()
