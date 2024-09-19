@@ -28,6 +28,10 @@
     height: 150px;
     border: 3px solid black;
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
 }
 
 .board--top-left {
@@ -60,4 +64,15 @@
 
 .board--bot-right {
     border-width: 3px 0 0 3px;
+}
+
+.results-pop-up {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    opacity: 1;
 }

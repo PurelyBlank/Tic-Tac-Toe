@@ -104,7 +104,7 @@ const gameController = function() {
         ++rounds
         if (rounds === 9) {
             console.log("Tie!")
-            return
+            return "T"
         }
         
         console.log(`${getCurrentPlayer().name}'s turn placed token on row: ${position.row}, col: ${position.col}`)
@@ -135,7 +135,60 @@ const displayController = function() {
     const cells = document.querySelectorAll(".board--cell")
     cells.forEach((elem) => elem.addEventListener("click", (event) => {
         let board_id = event.target.id
-        let row = board_id / 3
-        let col = row % 3
+        let id_num = Number(board_id[board_id.length - 1]) - 1
+        let row = Math.floor(id_num / 3)
+        let col = id_num % 3
+
+        let cell = document.getElementById(board_id);
+        if (!cell.hasChildNodes()) {  // Check if the cell is empty
+            updateCell(cell.id);
+        }
+
+        let gameState = gameController.playRound({row: row, col: col})
+        let winnerStatus = gameController.haveWinner(gameController.getCurrentPlayer()) 
+        if (winnerStatus) {
+            // Game stops
+            resultPopUp(gameController.getCurrentPlayer().name)
+        }
+        if (gameState === "T") {
+            // TIE
+            resultPopUp("T")
+        }
     }))
+
+    
+    const resultPopUp = (winner) => {
+        const result = document.createElement("div")
+        const popUpContent = document.createElement("div")
+        const popUpMsg = document.createElement("div")
+        const popUpHeader = document.createElement("h1")
+        const popUpExit = document.createElement("button")
+
+        result.classList.add("results-pop-up")
+        popUpContent.classList.add("pop-up-content")
+        popUpMsg.classList.add("pop-up-msg")
+        popUpHeader.classList.add("pop-up-header")
+        popUpExit.classList.add("pop-up-exit")
+        
+        popUpHeader.textContent = "Game Result" 
+        popUpMsg.textContent = winner == "T" ? "Draw!" : winner + " is the winner!"
+        popUpExit.textContent = "Restart"
+
+        popUpContent.appendChild(popUpHeader)
+        popUpContent.appendChild(popUpMsg)
+        popUpContent.appendChild(popUpExit)
+        result.appendChild(popUpContent)
+
+        const body = document.querySelector("body")
+        body.appendChild(result)
+    }
+
+
+    const updateCell = (board_id) => {
+        let cell = document.getElementById(board_id);
+        let divElem = document.createElement("div");
+        divElem.classList.add("cell--token");
+        divElem.textContent = gameController.getCurrentPlayer().id % 2 === 0 ? "X" : "O"
+        cell.appendChild(divElem);
+    }
 }()
