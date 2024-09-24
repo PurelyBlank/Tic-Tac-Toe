@@ -110,8 +110,7 @@ const gameController = function() {
     }
 
     const playRound = (position) => {
-        ++rounds
-        if (rounds === 9) {
+        if (rounds++ === 9) {
             console.log("Tie!")
             return "T"
         }
@@ -161,7 +160,7 @@ const displayController = function() {
         let winnerStatus = gameController.haveWinner(gameController.getCurrentPlayer()) 
         if (winnerStatus) {
             // Game stops
-            resultPopUp(gameController.getCurrentPlayer().name)
+            resultPopUp(getCellToken(gameController.getCurrentPlayer().id))
         }
         if (gameState === "T") {
             // TIE
@@ -169,6 +168,16 @@ const displayController = function() {
         }
     }))
 
+    const getCellToken = (playerID) => {
+        switch(playerID) {
+            case 1:
+                return "O"
+            case 2:
+                return "X"
+            default:
+                return "NULL"
+        }
+    }
     
     const resultPopUp = (winner) => {
         const result = document.createElement("div")
