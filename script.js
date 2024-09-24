@@ -8,10 +8,12 @@ const gameBoard = function() {
     const col = 3
     let board = []
 
-    for (let i = 0; i < row; ++i) {
-        board.push([])
-        for (let j = 0; j < col; ++j) {
-            board[i].push(Cell())
+    const initializeBoard = () => {
+        for (let i = 0; i < row; ++i) {
+            board.push([])
+            for (let j = 0; j < col; ++j) {
+                board[i].push(Cell())
+            }
         }
     }
 
@@ -30,7 +32,14 @@ const gameBoard = function() {
         console.log(boardWithCellValues)
     }
 
-    return { getBoard, dropToken, printBoard }
+    const resetBoard = () => {
+        board = []
+        initializeBoard()
+    }
+        
+    initializeBoard()
+
+    return { getBoard, dropToken, printBoard, resetBoard }
 }()
 
 
@@ -123,6 +132,10 @@ const gameController = function() {
         printRound()
     }
 
+    const resetGame = () => {
+        gameBoard.resetBoard()
+    }
+
     printRound()
 
     return { playRound, getCurrentPlayer, haveWinner }
@@ -171,7 +184,7 @@ const displayController = function() {
         popUpExit.classList.add("pop-up-exit")
         
         popUpHeader.textContent = "Game Result" 
-        popUpMsg.textContent = winner == "T" ? "Draw!" : winner + " is the winner!"
+        popUpMsg.textContent = winner === "T" ? "Draw!" : winner + " is the winner!"
         popUpExit.textContent = "Restart"
 
         popUpContent.appendChild(popUpHeader)
@@ -181,8 +194,13 @@ const displayController = function() {
 
         const body = document.querySelector("body")
         body.appendChild(result)
-    }
 
+        const restartButton = document.querySelector(".pop-up-exit")
+        const restart = restartButton.addEventListener("click", (event) => {
+            console.log("clicked")
+            window.location.reload()
+        })
+    }
 
     const updateCell = (board_id) => {
         let cell = document.getElementById(board_id);
